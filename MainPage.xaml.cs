@@ -7,6 +7,7 @@ using NewCadeirinhaIoT.Draw;
 using NewCadeirinhaIoT.Parameters;
 using NewCadeirinhaIoT.PLC;
 using Windows.UI.Xaml;
+using System.Net;
 
 namespace NewCadeirinhaIoT
 {
@@ -36,14 +37,31 @@ namespace NewCadeirinhaIoT
             DispatcherTimer dispatcher = new DispatcherTimer();            
             dispatcher.Interval = new TimeSpan(0, 0, 15);
             dispatcher.Tick += VerifyConnection;
-            dispatcher.Tick += VerifyPopId;
+            dispatcher.Tick += VerifyPopId;  //new EventHandler<object>(VerifyPopId);
             //dispatcher.Tick += GetFromDB;
             dispatcher.Start();
+
             //ParametersAPI.RunAsync();
-            ParametersAPI.GetParameterAsync("api/cadeirinhas/485000");
+            //var result = ParametersAPI.Get();  //Pega parametros via WebApi
+            //Debug.WriteLine(result);      
 
         }
-
+        private void LoadedEvents(object sender, RoutedEventArgs e)
+        {
+            //RaspberryConfig.Init();
+            //projetorNumber = int.Parse(RaspberryConfig.Projetor);            
+            plc = new Plc("192.27.1.100", 0, 1);
+            try
+            {
+                plc.PlcConnect();
+                VerifyPopId(null,null);                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+       
 
         //Metodo para utilizar Service
         //private async void GetFromDB(object sender, object e)
@@ -70,42 +88,35 @@ namespace NewCadeirinhaIoT
             }
         }
 
-        private void VerifyPopId(object sender, object e)
+        private void VerifyPopId(object o, object e)
         {
             //parameters = plc.GetCadeirinhaParameters();
             //popid = Popid.GetFromString(parameters);
-            popid = plc.GetPopIdFromDb();
-
+            popid = plc.GetPopIdFromDb();            
             if (lastPopid != popid)
             {
                 Debug.WriteLine(string.Format("{1} >> NOVO POPID: {0} \n", popid, DateTime.Now.ToString("h:mm:ss")));
                 NewVehicle();
             }
         }
-        private void LoadedEvents(object sender, RoutedEventArgs e)
-        {
-            //RaspberryConfig.Init();
-            //projetorNumber = int.Parse(RaspberryConfig.Projetor);            
-            plc = new Plc("192.27.1.100", 0, 1);
-            try
-            {
-                plc.PlcConnect();                
-                NewVehicle();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }            
-        }       
+           
 
         private void NewVehicle()
         {
             ClearScreen();
             TextPopid.Text = popid;
-            lastPopid = popid;                       
-            parameters = parameters == "" ? new ParametersTest().GetRandom() : parameters;           
-            cadeirinhas = Cadeirinha.GenerateCadeirinhas(parameters);
-            DrawArrowOnScreen();
+            lastPopid = popid;
+            //parameters = parameters == "" ? new ParametersTest().GetRandom() : parameters;    
+            try
+            {
+                parameters = ParametersAPI.Get(popid);
+                cadeirinhas = Cadeirinha.GenerateCadeirinhas(parameters);
+                DrawArrowOnScreen();
+            }       
+            catch(WebException e )
+            {
+                Debug.WriteLine(":( Falha ao requisitar parametros" + e.Message);                
+            }                        
         }
                  
         private void DrawArrowOnScreen()

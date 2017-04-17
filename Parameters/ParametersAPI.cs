@@ -12,29 +12,32 @@ namespace NewCadeirinhaIoT.Parameters
 {
     public abstract class ParametersAPI
     {
-        private string url;
+        private static string url = "http://192.27.1.150:5000/api/cadeirinha/";
         private string server = "m9249";
-        public static HttpClient client = new HttpClient();      
-        
-        public static IEnumerable<string> GetParameterAsync(string path)
+
+
+        public static string Get(string popid)
         {
-            client.BaseAddress = new Uri("http://10.33.22.56/lts/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            IEnumerable<string> popid = new List<string>();
-            HttpResponseMessage response = client.GetAsync(path).Result;
-            if (response.IsSuccessStatusCode)
+
+            using (HttpClient client = new HttpClient())
             {
-                popid = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(url + popid).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsStringAsync().Result;
+                    }
+                }               
+                catch(WebException e)
+                {
+                    Debug.WriteLine(e.Message);                    
+                }
+                return "Not Ok";
             }
-            
-            return popid;            
         }
 
 
-        //public IEnumerable<string> Get()
-        //{
-
-        //}
+        
     }
 }

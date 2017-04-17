@@ -13,7 +13,7 @@ namespace NewCadeirinhaIoT
     public class Connection
     {
         public StreamSocket socket = null;
-        public StreamSocketListener listener;
+        public StreamSocketListener listener;  
         public MainPage screen;        
         public string Port { get; set; }
 

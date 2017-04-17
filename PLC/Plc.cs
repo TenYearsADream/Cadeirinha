@@ -42,11 +42,11 @@ namespace NewCadeirinhaIoT.PLC
 
         public string GetPopIdFromDb()
         {
-            int dbNumber = 1;
-            int initFrom = 10;
-            int sizeOfBuffer = 10;
+            int dbNumber = 250;
+            int initFrom = 120;
+            int sizeOfBuffer = 8;
             byte[] buff = new byte[sizeOfBuffer];
-            this.ReadArea(S7Consts.S7AreaDB, dbNumber, initFrom, sizeOfBuffer, S7Consts.S7WLByte, buff);
+            this.ReadArea(S7Consts.S7AreaDB, dbNumber, initFrom, sizeOfBuffer , S7Consts.S7WLByte, buff);
             return Encoding.UTF8.GetString(buff);
         }
 
