@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 //Classe para criar as cadeirinhas
 
-namespace NewCadeirinhaIoT.Draw
+namespace NewCadeirinhaIoT.Models
 {
     public class Cadeirinha //Nome em portugues pra dar identidade ao projeto
     {
@@ -12,8 +12,9 @@ namespace NewCadeirinhaIoT.Draw
         public char Side { get; set; } //Armazena E ou D
         public int Width { get; set; } //Comprimento em relacao ao eixo de apoio traseiro
         public int ID { get; private set; }
-
+        public int AD { get; set; }
         
+                
         public Cadeirinha(char type, char side, int width, int id)
         {
             Type = type;

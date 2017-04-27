@@ -1,10 +1,11 @@
-﻿using Windows.UI.Xaml;
+﻿using NewCadeirinhaIoT.Draw;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 
 //Classe para criar as flechas 
 
-namespace NewCadeirinhaIoT.Draw
+namespace NewCadeirinhaIoT.Models
 
 {
     public class Arrow 
@@ -16,17 +17,16 @@ namespace NewCadeirinhaIoT.Draw
 
         public Arrow(Cadeirinha cad)
         {
-            ArrowHeight = 100;            
+            ArrowHeight = 110; //Default            
             Cad = cad;
             Direction = GetArrowDirection();
             Img.Source = new Bmp(Direction).GetBitMapSource();
             Img.Height = ArrowHeight;
-            Img.Margin = new Thickness() { Left = Cad.Width - ArrowHeight / 2 };
             Img.HorizontalAlignment = HorizontalAlignment.Left;
         }
-        public Arrow(Cadeirinha cad, double screenRelation) : this(cad)
+        public Arrow(Cadeirinha cad, double screenRelation, int projetor) : this(cad)
         {            
-            Img.Margin = new Thickness() { Left = CalculateArrowMargin(screenRelation) };            
+            Img.Margin = new Thickness() { Left = CalculateArrowMargin(screenRelation, projetor) };            
         }
 
         private string GetArrowDirection()
@@ -36,11 +36,11 @@ namespace NewCadeirinhaIoT.Draw
             return "down";
         }
 
-        private double CalculateArrowMargin(double screenResolution)
+        private double CalculateArrowMargin(double screenResolution, int projetor)
         {
             if (Cad.Width < ArrowHeight/2) //Hard Coded
                 return 0;
-            return (Cad.Width * screenResolution) - (ArrowHeight / 2);            
+            return (Cad.Width * screenResolution) - (ArrowHeight / 2) - ((projetor - 1) * 2000);            
         }
 
         public void UpdateMargin(double margin)

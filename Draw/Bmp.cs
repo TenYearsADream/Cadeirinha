@@ -8,7 +8,7 @@ using Windows.Storage.Pickers;
 
 //Metodo para adicionar a imagem da flecha no Programa
 
-namespace NewCadeirinhaIoT.Draw
+namespace NewCadeirinhaIoT.Models
 
 {
     public class Bmp

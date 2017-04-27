@@ -6,23 +6,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Width="1280" Height="1080" Background="White" 
+    Width="1280" Height="1080"  
     >
 
-    <Grid x:Name="MainGrid" Background="Black">
+    <Grid x:Name="MainGrid" Background="Black" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1280" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="100" />
-            <RowDefinition Height="560" />
-            <RowDefinition Height="100" />
+            <RowDefinition Height="180" />
+            <RowDefinition Height="120" />
+            <RowDefinition Height="340" />
+            <RowDefinition Height="120" />
             <RowDefinition Height="290" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="2" x:Name="TextPopid" FontSize="100" HorizontalAlignment="Center"
-                   VerticalAlignment="Center" Foreground="White"/>
+        <TextBlock Grid.Row="0" x:Name="TextPopid" FontSize="90" HorizontalAlignment="Center"
+                   VerticalAlignment="Center" Foreground="Yellow"/>
 
 
 

@@ -12,11 +12,11 @@ namespace NewCadeirinhaIoT.Parameters
 {
     public abstract class ParametersAPI
     {
-        private static string url = "http://192.27.1.150:5000/api/cadeirinha/";
+        private static string url = @"http://192.27.1.150:5000/api/cadeirinha/";
         private string server = "m9249";
 
 
-        public static string Get(string popid)
+        public static string Get(string popid )
         {
 
             using (HttpClient client = new HttpClient())
@@ -28,10 +28,14 @@ namespace NewCadeirinhaIoT.Parameters
                     {
                         return response.Content.ReadAsStringAsync().Result;
                     }
-                }               
-                catch(WebException e)
+                }                
+                catch (WebException e)
                 {
                     Debug.WriteLine(e.Message);                    
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
                 }
                 return "Not Ok";
             }

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using System.Diagnostics;
-
 using NewCadeirinhaIoT.Draw;
 using NewCadeirinhaIoT.Parameters;
 using NewCadeirinhaIoT.PLC;
 using Windows.UI.Xaml;
 using System.Net;
+using NewCadeirinhaIoT.Models;
+using Windows.UI.Xaml.Shapes;
 
 namespace NewCadeirinhaIoT
 {
@@ -15,36 +16,33 @@ namespace NewCadeirinhaIoT
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public partial class MainPage : Page
-    {        
+    {
         IList<Cadeirinha> cadeirinhas = new List<Cadeirinha>();
         IList<Arrow> arrows = new List<Arrow>();
-        public Plc plc;        
+        IList<Rectangle> rectangles = new List<Rectangle>();
+        public Plc plc;
         public string parameters;
         public string popid;
         public string lastPopid;
-        double screenRelation = 0.64; //0.764;// screenWidth / maxWidth;         
-        double screenWidth;//= this.ActualWidth; //Tamanho da tela
-        double screenHeight;// = this.ActualHeight;
+        const double screenWidth = 1280;//= this.ActualWidth; //Tamanho da tela
+        const double screenHeight = 1024;// = this.ActualHeight;
         public int projetorNumber = 0;//int.Parse(RaspberryConfig.Projetor);
-        const int maxWidth = 2000; //Constante do maior numero da tel
+        const int maxWidth = 2000; //Tamanho da projecao
         const int projectorWidth = 2000; //Comprimento da projecao na longarina // Piso //       
         public bool tcpParameters = false; // Verifica se utiliza conexao do PLC ou WebService     
-       
+        double screenRelation = screenWidth / maxWidth; //~0.64
+
+        Projetor pj = new Projetor(2,"192.27.1.194",0,3000);
+
         public MainPage()
-        {            
+        {
             InitializeComponent();
             Loaded += LoadedEvents;
-            DispatcherTimer dispatcher = new DispatcherTimer();            
+            DispatcherTimer dispatcher = new DispatcherTimer();
             dispatcher.Interval = new TimeSpan(0, 0, 15);
             dispatcher.Tick += VerifyConnection;
-            dispatcher.Tick += VerifyPopId;  //new EventHandler<object>(VerifyPopId);
-            //dispatcher.Tick += GetFromDB;
+            dispatcher.Tick += VerifyPopId;
             dispatcher.Start();
-
-            //ParametersAPI.RunAsync();
-            //var result = ParametersAPI.Get();  //Pega parametros via WebApi
-            //Debug.WriteLine(result);      
-
         }
         private void LoadedEvents(object sender, RoutedEventArgs e)
         {
@@ -54,24 +52,13 @@ namespace NewCadeirinhaIoT
             try
             {
                 plc.PlcConnect();
-                VerifyPopId(null,null);                
+                VerifyPopId(null, null);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
         }
-       
-
-        //Metodo para utilizar Service
-        //private async void GetFromDB(object sender, object e)
-        //{
-        //    popid = "480924";
-        //    CadService.ServiceClient cadsrv = new CadService.ServiceClient();            
-        //    var res = await cadsrv.GetCadeirinhasAsync(popid);           
-        //    foreach(var r in res)            
-        //        Debug.WriteLine(r);         
-        //}
 
         private void VerifyConnection(object sender, object e)
         {
@@ -83,23 +70,23 @@ namespace NewCadeirinhaIoT
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);   
-                }                
+                    Debug.WriteLine(ex.Message);
+                }
             }
         }
 
         private void VerifyPopId(object o, object e)
         {
-            //parameters = plc.GetCadeirinhaParameters();
-            //popid = Popid.GetFromString(parameters);
-            popid = plc.GetPopIdFromDb();            
+            if (!plc.Connected) return;
+            popid = plc.GetPopIdFromDb();
+            lastPopid = "123";
             if (lastPopid != popid)
             {
                 Debug.WriteLine(string.Format("{1} >> NOVO POPID: {0} \n", popid, DateTime.Now.ToString("h:mm:ss")));
                 NewVehicle();
             }
         }
-           
+
 
         private void NewVehicle()
         {
@@ -112,18 +99,20 @@ namespace NewCadeirinhaIoT
                 parameters = ParametersAPI.Get(popid);
                 cadeirinhas = Cadeirinha.GenerateCadeirinhas(parameters);
                 DrawArrowOnScreen();
-            }       
-            catch(WebException e )
+                //DrawSquareOnScreen();
+            }
+            catch (WebException e)
             {
-                Debug.WriteLine(":( Falha ao requisitar parametros" + e.Message);                
-            }                        
+                Debug.WriteLine(":( Falha ao requisitar parametros" + e.Message);
+            }
         }
-                 
+
         private void DrawArrowOnScreen()
         {
-            Debug.WriteLine(">> Gerando objetos cadeirinhas \n");
+            /* SOLUCAO DA SETA */
+            Debug.WriteLine(">> Gerando setas cadeirinhas \n");
             foreach (Cadeirinha cad in cadeirinhas)
-                arrows.Add(new Arrow(cad, screenRelation));
+                arrows.Add(new Arrow(cad, screenRelation, pj.Number));
 
             foreach (Arrow arrow in arrows)
             {
@@ -133,6 +122,21 @@ namespace NewCadeirinhaIoT
                 Debug.WriteLine(string.Format(">> Cadeirinha ID: {0}, Lado: {1}, Posicao: {2}", arrow.Cad.ID, arrow.Cad.Side, arrow.Cad.Width));
             }
             Debug.WriteLine(">> Desenhando cadeirinhas na tela");
+
+        }
+
+        public void DrawSquareOnScreen()
+        {
+            /*SOLUCAO DO RETANGULO*/
+            Debug.WriteLine(">> Gerando Retangulos...");
+            foreach (Cadeirinha cad in cadeirinhas)
+            {
+                Rectangle r = Rect.GenerateRectangle(cad, screenRelation, pj.Number);
+                rectangles.Add(r);
+                int mainGridRow = cad.Side == 'E' ? 3 : 1;
+                Grid.SetRow(r, mainGridRow);
+                MainGrid.Children.Add(r);
+            }
         }
 
         private void ClearScreen()
@@ -142,7 +146,13 @@ namespace NewCadeirinhaIoT
 
             arrows.Clear();
             cadeirinhas.Clear();
-            
+
+            //foreach (Rectangle r in rectangles)
+            //    MainGrid.Children.Remove(r);
+
+            //rectangles.Clear();
+            //cadeirinhas.Clear();
+
             Debug.WriteLine(">> Apaganho cadeirinhas antigas \n");
         }
 

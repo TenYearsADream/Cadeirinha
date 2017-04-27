@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="NewCadeirinhaIoT" Publisher="CN=Raspberry" Version="1.0.0.0" />
+  <Identity Name="NewCadeirinhaIoT" Publisher="CN=Raspberry" Version="1.0.17.0" />
   <mp:PhoneIdentity PhoneProductId="0e3a0ac8-25fd-45e9-b33d-5d2b97d43e8d" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>NewCadeirinhaIoT</DisplayName>
