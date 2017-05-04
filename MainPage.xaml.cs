@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Windows.UI.Xaml.Controls;
-using System.Diagnostics;
-using NewCadeirinhaIoT.Draw;
-using NewCadeirinhaIoT.Parameters;
-using NewCadeirinhaIoT.PLC;
-using Windows.UI.Xaml;
-using System.Net;
+﻿using Windows.UI.Xaml.Controls;
 using NewCadeirinhaIoT.ViewModel;
 
 namespace NewCadeirinhaIoT
