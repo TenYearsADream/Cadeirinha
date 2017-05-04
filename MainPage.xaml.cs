@@ -32,7 +32,7 @@ namespace NewCadeirinhaIoT
         public bool tcpParameters = false; // Verifica se utiliza conexao do PLC ou WebService     
         double screenRelation = screenWidth / maxWidth; //~0.64
 
-        Projetor pj = new Projetor(2,"192.27.1.194",0,3000);
+        Projetor pj = new Projetor(1,"192.27.1.194",0,3000);
 
         public MainPage()
         {
@@ -79,7 +79,6 @@ namespace NewCadeirinhaIoT
         {
             if (!plc.Connected) return;
             popid = plc.GetPopIdFromDb();
-            lastPopid = "123";
             if (lastPopid != popid)
             {
                 Debug.WriteLine(string.Format("{1} >> NOVO POPID: {0} \n", popid, DateTime.Now.ToString("h:mm:ss")));
