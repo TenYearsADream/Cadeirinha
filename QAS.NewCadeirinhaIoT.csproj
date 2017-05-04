@@ -98,16 +98,6 @@
     <None Include="project.json" />
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
     <None Include="QAS.NewCadeirinhaIoT_TemporaryKey.pfx" />
-    <None Include="Service References\CadService\CadeirinhaService.wsdl" />
-    <None Include="Service References\CadService\CadeirinhaService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CadService\CadeirinhaService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CadService\CadeirinhaService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -131,11 +121,6 @@
     <Compile Include="Models\Popid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PLC\Sharp7.cs" />
-    <Compile Include="Service References\CadService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,13 +139,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <None Include="Service References\CadService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\CadService\configuration.svcinfo" />
-    <None Include="Service References\CadService\configuration91.svcinfo" />
-    <None Include="Service References\CadService\CadeirinhaService.disco" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -174,9 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\CadService\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

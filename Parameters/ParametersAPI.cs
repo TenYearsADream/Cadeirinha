@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Diagnostics;
+using System.IO;
 
 namespace NewCadeirinhaIoT.Parameters
 {
@@ -14,6 +15,25 @@ namespace NewCadeirinhaIoT.Parameters
     {
         private static string url = @"http://192.27.1.150:5000/api/cadeirinha/";
         private string server = "m9249";
+
+
+        public async Task<string> GetParametersAsync(string popid)
+        {
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var response = await httpClient.GetAsync(url + popid).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                {
+                    return await new StreamReader(responseStream).ReadToEndAsync().ConfigureAwait(false);
+                }
+            }
+            return null;
+        }
+
 
 
         public static string Get(string popid )
