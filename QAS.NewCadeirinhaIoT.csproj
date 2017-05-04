@@ -118,7 +118,6 @@
     <Compile Include="Draw\ArrowUp.cs" />
     <Compile Include="Draw\Bmp.cs" />
     <Compile Include="Models\Cadeirinha.cs" />
-    <Compile Include="Connection.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -136,6 +135,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +144,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\test1.txt" />
     <Content Include="Images\y_arrow_down.png" />
     <Content Include="Images\y_arrow_up.png" />
     <Content Include="Properties\Default.rd.xml" />

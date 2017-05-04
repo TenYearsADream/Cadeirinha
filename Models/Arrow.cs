@@ -13,10 +13,11 @@ namespace NewCadeirinhaIoT.Models
         private int ArrowHeight { get; set; }
         public string Direction { get; protected set; }
         public Cadeirinha Cad { get; set; }
-        public Image Img = new Image();
+        public Image Img { get; set; }
 
         public Arrow(Cadeirinha cad)
         {
+            Img = new Image();
             ArrowHeight = 110; //Default            
             Cad = cad;
             Direction = GetArrowDirection();

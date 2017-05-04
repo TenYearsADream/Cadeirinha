@@ -14,12 +14,12 @@ namespace NewCadeirinhaIoT.Models
         public double Height { get; set; }
         public double OffsetStation { get; set; }
 
-        public Projetor(int number, string ip, double width, double height)
+        public Projetor(int number, string ip, double width)
         {
             Number = number;
             IP = ip;
             Width = width;
-            Height = height;
+            Height = 3000;
         }
 
 

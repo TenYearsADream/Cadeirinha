@@ -21,7 +21,8 @@
             <RowDefinition Height="290" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" x:Name="TextPopid" FontSize="90" HorizontalAlignment="Center"
+
+        <TextBlock Grid.Row="0" Text="{Binding popid}" FontSize="90" HorizontalAlignment="Center"
                    VerticalAlignment="Center" Foreground="Yellow"/>
 
 
